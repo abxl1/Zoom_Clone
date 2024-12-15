@@ -1,3 +1,6 @@
+const msgList = document.querySelector("ul");
+const msgForm = document.querySelector("form");
+
 const socket = new WebSocket(`ws://${window.location.host}`); // 사용자의 localhost를 환경변수로 처리
 
 socket.addEventListener("open", () => {
@@ -12,6 +15,11 @@ socket.addEventListener("close", () => {
     console.log("DisConnected to Server ❌");
 })
 
-setTimeout(() => {
-    socket.send("hello from the browser!");
-}, 10000) // 10초 후 메시지 출력
+function handleSummit(event) {
+    event.preventDefault();
+    const input = msgForm.querySelector("input");
+    socket.send(input.value);
+    input.value = "";
+}
+
+msgForm.addEventListener("submit", handleSummit);
