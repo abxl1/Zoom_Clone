@@ -21,6 +21,7 @@ socket.addEventListener("message", (message) => {
     const li = document.createElement("li");
     li.innerText = message.data;
     msgList.append(li);
+    input.value = "";
 })
 
 socket.addEventListener("close", () => {
@@ -31,6 +32,9 @@ function handleSubmit(event) {
     event.preventDefault();
     const input = msgForm.querySelector("input");
     socket.send(makeMsg("new_message", input.value));
+    const li = document.createElement("li");
+    li.innerText = `You : ${input.value}`;
+    msgList.append(li);
     input.value = "";
 }
 
