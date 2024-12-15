@@ -25,7 +25,6 @@ wss.on("connection", (socket) => {
 
         // 각 브라우저를 aSocket으로 취급, 모든 브라우저에 메시지 전송
         sockets.forEach(aSocket => aSocket.send(message.toString()));
-        socket.send(message.toString());
     });
 });
 
