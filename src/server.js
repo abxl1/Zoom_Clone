@@ -19,12 +19,21 @@ const sockets = []; // fake database
 
 wss.on("connection", (socket) => {
     sockets.push(socket); // 모든 소켓을 소켓 객체에 넣기
+    socket["nickname"] = "Anon"; // 닉네임 save 없을 시에 socket을 익명으로 저장
+
     console.log("Connected to Browser ✅");
     socket.on("close", () => console.log("DisConnected from the Browser ❌"));
-    socket.on("message", (message) => {
 
-        // 각 브라우저를 aSocket으로 취급, 모든 브라우저에 메시지 전송
-        sockets.forEach(aSocket => aSocket.send(message.toString()));
+    socket.on("message", (msg) => {
+        const message = JSON.parse(msg);
+
+        switch (message.type) {
+            case("new_message") :
+                sockets.forEach(aSocket => 
+                    aSocket.send(`${socket.nickname} :  ${message.payload}`));
+            case("nickname") :
+            socket["nickname"] = message.payload;
+        }
     });
 });
 
